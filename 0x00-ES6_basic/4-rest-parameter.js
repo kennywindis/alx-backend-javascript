@@ -1,2 +1,2 @@
-export default function returnHowManyArguments(...argsnumbr) {console.log(argsnumbr.length);
+export default function returnHowManyArguments(...argsnumbr) {return argsnumbr.length;
 }
