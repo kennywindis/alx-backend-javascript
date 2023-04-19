@@ -10,6 +10,6 @@ export default function handleProfileSignup(firstName, lastName, fileName) {
     for (const item of values) {
       k.push({ status: item.status, value: item.value || item.reason });
     }
-    return arr;
+    return k;
   });
 }
