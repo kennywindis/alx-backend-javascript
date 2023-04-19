@@ -1,4 +1,10 @@
 export default function getResponseFromAPI() {
-	return new Promise(() => {});
+  const k = true;
+  return new Promise((resolve, reject) => {
+    if (k) {
+      resolve();
+    } else {
+      reject();
+    }
+  });
 }
-
