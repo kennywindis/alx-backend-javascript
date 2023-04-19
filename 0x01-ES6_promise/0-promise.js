@@ -1,9 +1,9 @@
 export default function getResponseFromAPI() {
-const k = new promise(function (resolve, reject) {
+const k = new Promise(function (resolve, reject) {
 	if (k >= 0) {
 		resolve (k)
 	}
-	else
+	else{
 	reject('not')
 })
 	return k;
