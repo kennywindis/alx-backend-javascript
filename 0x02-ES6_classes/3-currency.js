@@ -12,11 +12,11 @@ export default class Currency {
     return this._name;
   }
 
-  set code(CodeC) {
+  set code(newCode) {
     this._code = newCode;
   }
 
-  set name(NameN) {
+  set name(newName) {
     this._name = newName;
   }
 
