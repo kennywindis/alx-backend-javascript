@@ -1,7 +1,7 @@
 export default class Building {
 constructor(sqft) {
 if (
-      this.constructor !== Build
+      this.constructor !== Building
       && typeof this.evacuationWarningMessage !== 'function'
     ) {
       throw Error(
