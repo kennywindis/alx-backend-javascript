@@ -18,7 +18,8 @@ return this._students:
 }
 
 set name(nameN) {
-if (typeof nameN !== 'string') {throw new TypeError('Name must be a string');}
+if (typeof nameN !== 'string') {throw new TypeError('Name must be a string');
+;}
 this._name = nameN;
 }
 
@@ -30,6 +31,6 @@ this._length = lengthL;
 set students(studentsS) {
 if (!Array.isArray(studentsS)) { throw new TypeError('Students must be an array'); }
 this._students = studentsS;
-  }
+}
 }
 
