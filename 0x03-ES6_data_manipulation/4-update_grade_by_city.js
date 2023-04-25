@@ -3,7 +3,7 @@ export default function getStudentsByLocation(array, city, grad) {
     .filter((k) => k.location === city)
     .map((student) => {
       const gradeI = grad
-        .filter((k) => i.studentId === student.id)
+        .filter((k) => k.studentId === student.id)
         .map((x) => x.grade)[0];
       const grade = gradeI || 'N/A';
       return { ...student, grade };
