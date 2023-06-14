@@ -1,20 +1,29 @@
-const app = require('express')();
+const express = require('express');
 const countStudents = require('./3-read_file_async');
-const pathToCSVFile = process.argv[2];
 
-// Setup a listener
-app.listen(1245);
+const app = express();
+const port = 1245;
 
 app.get('/', (req, res) => {
-  res.status(200).send('Hello Holberton School!');
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.send('Hello Holberton School!');
 });
 
-app.get('/students', (req, res) => {
-  countStudents(pathToCSVFile, 0)
-    .then((success) => {
-      const out = `This is the list of our students\n${success}`;
-      res.status(200).send(out);
+app.get('/students', async (req, res) => {
+  res.statusCode = 200;
+  res.setHeader('Content-Type', 'text/plain');
+  res.write('This is the list of our students\n');
+  await countStudents(process.argv[2]).then((data) => {
+    res.write(`Number of students: ${data.students.length}\n`);
+    res.write(`Number of students in CS: ${data.csStudents.length}. List: ${data.csStudents.join(', ')}\n`);
+    res.write(`Number of students in SWE: ${data.sweStudents.length}. List: ${data.sweStudents.join(', ')}`);
+  }).catch((err) => res.write(err.message))
+    .finally(() => {
+      res.end();
     });
 });
+
+app.listen(port);
 
 module.exports = app;
