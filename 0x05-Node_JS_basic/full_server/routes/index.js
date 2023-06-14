@@ -1,11 +1,12 @@
-const app = require('../server');
-const AppController = require('../controllers/AppController');
-const StudentsController = require('../controllers/StudentsController');
-const dbPath = process.argv[2];
-const router = app.Router()
+const express = require('express');
+const router = express.Router();
 
-console.log('dbPath');
+import AppController from '../controllers/AppController';
+import StudentsController from '../controllers/StudentsController';
 
-router.get('/', (res, req) => AppController.getHomepage(res, req));
-router.get('/students', (res, req) => StudentsController.getAllStudents(res, req, dbPath));
-router.get('/students/:major', (res, req) => StudentsController.getAllStudentsByMajor(res, req, dbPath));
+router.get('/', (req, res) => AppController.getHomepage(req, res));
+router.get('/students', (req, res) => StudentsController.getAllStudents(req, res));
+router.get('/students/:major', (req, res) => StudentsController.getAllStudentsByMajor(req, res));
+
+export default router;
+module.exports = router;
