@@ -1,67 +1,76 @@
-const { expect } = require("chai");
-const request = require('request')
+const request = require('request');
+const { expect } = require('chai');
+
 const url = 'http://localhost:7865';
 
-describe('Index page', () => {
-    it('GET /', (done) => {
-        request('http://localhost:7865/', (error, response, body) => {
-            expect(response.statusCode).to.equal(200)
-            expect(body).to.equal('Welcome to the payment system')
-        }, done())
-    })
-
-	it('GET /cart/:id', (done) => {
-		request('http://localhost:7865/cart/12', (error, response, body) => {
-			expect(response.statusCode).to.equal(200)
-			expect(body).to.equal('Payment methods for cart 12')
-		}, done())
-	})
-
-	it('GET /cart/hello', (done) => {
-        request('http://localhost:7865/cart/hello', (error, response, body) => {
-            if (response) {
-                expect(response.statusCode).to.equal(404)
-                expect(body).to.equal('<!DOCTYPE html>\n' +
-                '<html lang="en">\n' +
-                '<head>\n' +
-                '<meta charset="utf-8">\n' +
-                '<title>Error</title>\n' +
-                '</head>\n' +
-                '<body>\n' +
-                '<pre>Cannot GET /cart/hello</pre>\n' +
-                '</body>\n' +
-                '</html>\n');
-			}
-		}, done());
-	});
-});
-
-describe('Available_Payments page', () => {
-    it('GET /available_payments', (done) => {
-        request(`${url}/available_payments`, (err, res, body) => {
-            expect(res.statusCode).to.equal(200)
-            expect(body).to.deep.equal(JSON.stringify({
-                payment_methods: {
-                    credit_cards: true,
-                    paypal: false
-                }
-            }));
-            done();
-        });
+describe('Express app /', () => {
+  it('/ ok code status', (done) => {
+    request.get(url, function (err, res, body) {
+      expect(res.statusCode).to.equal(200);
+      done()
     });
-});
-
-describe('Login page', () => {
-    const options = {
-        url: 'http://localhost:7865/login',
-        method: 'POST',
-        json: { 'userName': 'Betty' }
-    }
-    it('POST /login', (done) => {
-        request(options, (err, res, body) => {
-            expect(res.statusCode).to.equal(200);
-            expect(body).to.equal('Welcome Betty');
-            done();
-        });
+  });
+  it('/ correct output', (done) => {
+    request.get(url, function (err, res, body) {
+      expect(body).to.equal('Welcome to the payment system');
+      done()
     });
+  });
+
+  describe('Express app /cart/:id', () => {
+    it('ok code status', (done) => {
+      request.get(`${url}/cart/5`, (error, response, body) => {
+        expect(response.statusCode).to.equal(200);
+        done()
+      });
+    });
+    it('correct output', (done) => {
+      request.get(`${url}/cart/5`, (error, response, body) => {
+        expect(body).to.equal('Payment methods for cart 5');
+        done()
+      });
+    });
+    it('status code 404', (done) => {
+      request.get(`${url}/cart/asd`, (error, response, body) => {
+        expect(response.statusCode).to.equal(404);
+        done()
+      });
+    });
+  });
+
+  describe('Express app /available_payments', () => {
+    it('[Correct status] 200', (done) => {
+      request.get(`${url}/available_payments`, (error, response, body) => {
+        expect(response.statusCode).to.equal(200);
+        done();
+      });
+    });
+    it('[Correct result] object', (done) => {
+      request.get(`${url}/available_payments`, (error, response, body) => {
+        expect(JSON.parse(body)).to.eql({ payment_methods: { credit_cards: true, paypal: false } })
+        done();
+      });
+    });
+  });
+
+  describe('express app POST /login', () => {
+    it('[Correct status] 200', (done) => {
+      const options = {
+        json: { "userName": "Betty" }
+      }
+      request.post(`${url}/login`, options, (err, httpResponse, body) => {
+        expect(httpResponse.statusCode).to.equal(200);
+        done();
+      });
+    });
+    it('[Correct result] Welcome Betty', (done) => {
+      const options = {
+        json: { "userName": "Betty" }
+      }
+      request.post(`${url}/login`, options, (err, httpResponse, body) => {
+        expect(body).to.equal('Welcome Betty')
+        done();
+      });
+    });
+  });
 });
