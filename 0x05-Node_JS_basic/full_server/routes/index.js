@@ -2,7 +2,7 @@ import express from 'express';
 import AppController from '../controllers/AppController';
 import StudentsController from '../controllers/StudentsController';
 
-function cRouting(app) {
+function controllerRouting(app) {
   const router = express.Router();
   app.use('/', router);
 
@@ -19,4 +19,4 @@ function cRouting(app) {
   });
 }
 
-export default cRouting;
+export default controllerRouting;
